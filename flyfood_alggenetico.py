@@ -78,13 +78,13 @@ def selecao2(rank):
 
 
 def crossover(pai1, pai2):
-    trecho1_pai1 = []
-    trecho_pai2 = []
-    trecho2_pai1 = len(pai1) // 2
-    for i in range(0, trecho2_pai1):
-        trecho1_pai1.append(pai1[i])
-    trecho_pai2 = [item for item in pai2 if item not in trecho1_pai1]
-    return trecho1_pai1 + trecho_pai2
+    filho1 = []
+    filho2 = []
+    aux = len(pai1) // 2
+    for i in range(0, aux):
+        filho1.append(pai1[i])
+    filho2 = [item for item in pai2 if item not in filho1]
+    return filho1 + filho2
 
 
 def mutacao_pop(nova_geracao):
