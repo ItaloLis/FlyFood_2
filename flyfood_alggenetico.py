@@ -43,16 +43,16 @@ def rotas(rota):
 
 def fitnessFunction(pop):
     fitness = {}
-    for indiv in range(len(pop)):
-        fitness[indiv] = 1 / rotas(pop[indiv])
+    for custo in range(len(pop)):
+        fitness[custo] = 1 / rotas(pop[custo])
     return fitness
 
 
 '''Algoritmo genético: seleção -> crossover -> mutação -> implementação'''
 
-def ranking(rank, pop):
+def ranking(fitness, pop):
     global solucao
-    rota = max(rank.items(), key=operator.itemgetter(1))
+    rota = max(fitness.items(), key=operator.itemgetter(1))
     if solucao == None:
         solucao = [pop[rota[0]], rota[1]]
     else:
@@ -60,15 +60,15 @@ def ranking(rank, pop):
             solucao = [pop[rota[0]], rota[1]]
 
 
-def selecao(rank):
-    pais = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)
+def selecao(fitness):
+    pais = sorted(fitness.items(), key=operator.itemgetter(1), reverse=True)
     return pais
 
 
-def selecao2(rank):
+def selecao_pais(fitness):
     global tamanho_pop
     rotas_apt = []
-    pais = sorted(rank.items(), key=operator.itemgetter(1), reverse=False)
+    pais = sorted(fitness.items(), key=operator.itemgetter(1), reverse=False)
     rank_sum = tamanho_pop * (tamanho_pop + 1) / 2
     for iterator in range(tamanho_pop):
         prob = (float(iterator + 1) / rank_sum) * 100
@@ -87,14 +87,6 @@ def crossover(pai1, pai2):
     return filho1 + filho2
 
 
-def mutacao_pop(nova_geracao):
-    filho_mutado = []
-    for iterator in range(0, len(nova_geracao)):
-        mutacao_feita = mutacao(nova_geracao[iterator])
-        filho_mutado.append(mutacao_feita)
-    return filho_mutado
-
-
 def mutacao(rota):
     global taxa_mut
     for ponto_entrega in range(len(rota)):
@@ -103,9 +95,17 @@ def mutacao(rota):
             ponto1 = rota[ponto_entrega]
             ponto2 = rota[mudar_rota]
 
-            rota[ponto_entrega] = ponto2
             rota[mudar_rota] = ponto1
+            rota[ponto_entrega] = ponto2
     return rota
+
+
+def mutacao_pop(nova_geracao):
+    filho_mutado = []
+    for iterator in range(0, len(nova_geracao)):
+        mutacao_feita = mutacao(nova_geracao[iterator])
+        filho_mutado.append(mutacao_feita)
+    return filho_mutado
 
 
 arquivo = open('arquivo.txt', 'r')
@@ -121,7 +121,7 @@ for i in range(parada):
     ranking(fitness, pop)
     tam_novageracao = 0
     nova_geracao = []
-    selecao_ranking = selecao2(fitness)
+    selecao_ranking = selecao_pais(fitness)
     while tam_novageracao < tamanho_pop:
         pai1, pai2 = (pop[choice(selecao_ranking)[0]], pop[choice(selecao_ranking)[0]])
         filho1 = crossover(pai1, pai2)
@@ -133,6 +133,5 @@ for i in range(parada):
         tam_novageracao += 2
 
     pop = mutacao_pop(nova_geracao)
-
 
 print("".join(solucao[0]))
