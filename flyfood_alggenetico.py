@@ -88,11 +88,11 @@ def crossover(pai1, pai2):
 
 
 def mutacao_pop(nova_geracao):
-    filho_mut = []
+    filho_mutado = []
     for iterator in range(0, len(nova_geracao)):
         mutacao_feita = mutacao(nova_geracao[iterator])
-        filho_mut.append(mutacao_feita)
-    return filho_mut
+        filho_mutado.append(mutacao_feita)
+    return filho_mutado
 
 
 def mutacao(rota):
