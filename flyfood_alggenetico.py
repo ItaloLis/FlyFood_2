@@ -9,12 +9,12 @@ taxa_mut = 0.5
 
 def lendo_matriz(arquivo):
     pontos = {}
-    i, j = map(int, arquivo.readline().split(' '))  # Recebe o nº de linhas e colunas da matriz
+    i, j = map(int, arquivo.readline().split(' '))
     for l in range(i):
-        linha = arquivo.readline().strip().split(' ')  # Recebe a linha do arquivo e trata os espaços em branco
+        linha = arquivo.readline().strip().split(' ')
         for c in range(len(linha)):
-            if linha[c] != '0':  # Verifica se o valor observado não é um "0"
-                pontos[linha[c]] = (l, c)  # Atribui a letra sua posição na matriz
+            if linha[c] != '0':
+                pontos[linha[c]] = (l, c)
     return pontos
 
 '''Populaçao inicial e função fitness:'''
@@ -23,13 +23,13 @@ def populacao_inicial(pontos):
     cromossomo = [item for item in pontos if item != 'R']
     pop_inicial = []
     while len(pop_inicial) < tamanho_pop:
-        permutation = sample(cromossomo, len(cromossomo))  # Gera uma rota aleatória
+        permutation = sample(cromossomo, len(cromossomo))
         if permutation not in pop_inicial:
             pop_inicial.append(permutation)
     return pop_inicial
 
 
-def rotas(rota):   #Retorna a distância entre 2 pontos
+def rotas(rota):
     rota = 'R' + "".join(rota) + 'R'
     custo = 0
     for pos in range(len(rota) - 1):
